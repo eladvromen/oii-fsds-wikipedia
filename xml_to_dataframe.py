@@ -6,6 +6,8 @@ from tqdm import tqdm
 
 def parse_revision_xml(xml_content: str, include_text: bool = False) -> dict:
     """Parse a single revision XML string into a dictionary."""
+    # Print the first 100 characters for inspection
+
     soup = BeautifulSoup(xml_content, "lxml-xml")
     revision = soup.find("revision")
     
@@ -114,6 +116,8 @@ def main(data_dir: Path, output_dir: Path, batch_size: int = 1000, include_text:
         df = process_article_directory(article_dir, batch_size, include_text)
         
         if df is not None:
+            # output_path = output_dir / f"{article_dir.name}.csv"
+            # df.to_csv(output_path, index=False, encoding="utf-8")
             output_path = output_dir / f"{article_dir.name}.feather"
             df.to_feather(output_path)
             print_summary(df, article_dir.name, include_text)
